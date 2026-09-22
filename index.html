@@ -453,7 +453,7 @@ fieldset.rub{border:0;border-top:1.5px solid var(--line);margin:0;padding:14px 0
 
 </main>
 
-<p class="foot">Prototipe media pembelajaran Seni Budaya. Nama dan penjelasan gerak kepala, tangan, dan kaki mengacu pada rangkaian video tutorial gerak tari tradisional oleh Ocin Noi. Gerak avatar dibuat dari pose sederhana agar siswa fokus pada ruang, waktu, dan tenaga; detail jari, pergelangan tangan, dan posisi duduk atau berlutut belum ditampilkan.</p>
+<p class="foot">Prototipe media pembelajaran Seni Budaya. Nama dan penjelasan gerak kepala, tangan, dan kaki mengacu pada rangkaian video tutorial gerak tari tradisional. Gerak avatar dibuat dari pose sederhana agar siswa fokus pada ruang, waktu, dan tenaga; detail jari, pergelangan tangan, dan posisi duduk atau berlutut belum ditampilkan.</p>
 </div>
 
 <script>
@@ -539,7 +539,7 @@ const MOVES={
     A:mk({lTh:36,rTh:36,lSh:0,rSh:0,lUA:30,lFA:22,rUA:30,rFA:22}),
     B:mk({lTh:4,rTh:4,lSh:4,rSh:4,lift:19,tip:1,lUA:120,lFA:130,rUA:120,rFA:130})}
 };
-/* gerak kepala (video tutorial gerak tari tradisional oleh Ocin).
+/* gerak kepala (video tutorial gerak tari tradisional).
    fn(p,dir): p = fase 0..1 pada satu putaran; mengembalikan pergeseran kepala.
    head = miring (derajat), hYaw = menoleh, hPitch = mengangguk (positif: menunduk),
    hX = geser kiri-kanan, hY = geser atas-bawah (positif: turun), hZ = maju ke arah penonton. */
@@ -905,9 +905,9 @@ function syncControls(){
   const mv=MOVES[sc1.move],isHead=!!mv.fn;
   $('#levelWrap').toggleAttribute('hidden',isHead);
   $('#dirWrap').toggleAttribute('hidden',!mv.hasDir);
-  $('#partNote').textContent=isHead?'Sumber gerak kepala: video tutorial gerak tari tradisional oleh Ocin Noi. Titik kuning menandai dagu atau dahi yang dipantau.'
-    :curPart==='tangan'?'Sumber gerak tangan: video tutorial lanjutan oleh Ocin Noi. Ini pendekatan sederhana pada tingkat lengan; posisi jari (seperti Rumbai, Ngiting, Nyurupet) dan putaran pergelangan tangan (Ukel) belum bisa ditampilkan karena avatar belum punya jari dan sendi pergelangan.'
-    :curPart==='kaki'?'Sumber gerak kaki: video tutorial lanjutan oleh Ocin Noi. Hanya sikap berdiri yang ditampilkan; posisi duduk atau berlutut (Calik, Jengkeng, Deku, Depok) belum bisa digambarkan karena avatar ini hanya dibuat untuk berdiri.'
+  $('#partNote').textContent=isHead?'Sumber gerak kepala: video tutorial gerak tari tradisional. Titik kuning menandai dagu atau dahi yang dipantau.'
+    :curPart==='tangan'?'Sumber gerak tangan: video tutorial lanjutan. Ini pendekatan sederhana pada tingkat lengan; posisi jari (seperti Rumbai, Ngiting, Nyurupet) dan putaran pergelangan tangan (Ukel) belum bisa ditampilkan karena avatar belum punya jari dan sendi pergelangan.'
+    :curPart==='kaki'?'Sumber gerak kaki: video tutorial lanjutan. Hanya sikap berdiri yang ditampilkan; posisi duduk atau berlutut (Calik, Jengkeng, Deku, Depok) belum bisa digambarkan karena avatar ini hanya dibuat untuk berdiri.'
     :'Contoh gerak umum untuk bagian ini.';
 }
 function renderObs(){
