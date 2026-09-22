@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Peta Gerak: belajar gerak dasar tari bebas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F1F2F7; --surface:#FFFFFF; --surface-2:#E6E8F0; --ink:#171733; --ink-2:#565877; --line:#D3D6E3;
+  --pink:#C8005F; --blue:#0B62C4; --green:#0B7A4E; --yellow:#FFD23F;
+  --on-accent:#FFFFFF; --on-yellow:#171733;
+  --ok:#0B7A4E; --bad:#B3261E; --ok-bg:#DDF2E7; --bad-bg:#FBE3E0;
+  --stage:#1E1B3F;
+  --tape-p:#FF5CA8; --tape-y:#FFD23F;
+  --skin:#E8B48A; --hair:#4A2C3A;
+  --costume:#FF5CA8; --costume-2:#C23D7C;
+  --font-display:'Syne','Trebuchet MS',system-ui,sans-serif;
+  --font-body:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F0F24; --surface:#191938; --surface-2:#22224A; --ink:#EEEFFA; --ink-2:#A4A7CB; --line:#33356A;
+    --pink:#FF5CA8; --blue:#6FB0FF; --green:#4FD39A; --yellow:#FFD23F;
+    --on-accent:#10102A; --on-yellow:#171733;
+    --ok:#4FD39A; --bad:#FF8A80; --ok-bg:#133A2C; --bad-bg:#451B1E;
+    --stage:#161437;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F0F24; --surface:#191938; --surface-2:#22224A; --ink:#EEEFFA; --ink-2:#A4A7CB; --line:#33356A;
+  --pink:#FF5CA8; --blue:#6FB0FF; --green:#4FD39A; --yellow:#FFD23F;
+  --on-accent:#10102A; --on-yellow:#171733;
+  --ok:#4FD39A; --bad:#FF8A80; --ok-bg:#133A2C; --bad-bg:#451B1E;
+  --stage:#161437;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+[hidden]{display:none !important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55}
+h1,h2,h3{font-family:var(--font-display);margin:0;line-height:1.15;letter-spacing:-.01em}
+h2{font-size:clamp(22px,4.2vw,28px);font-weight:700}
+h3{font-size:18px;font-weight:700}
+p{margin:0}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1060px;margin:0 auto;padding:0 16px 64px}
+
+/* header */
+.top{padding:26px 0 14px}
+.top h1{font-size:clamp(38px,8.5vw,64px);font-weight:800;letter-spacing:-.02em}
+.top p{color:var(--ink-2);margin-top:8px;max-width:52ch;font-size:17px}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:8px 0 10px;border-bottom:1.5px solid var(--line)}
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px}
+.phases span{font-size:13px;font-weight:600;color:var(--ink-2);border-top:4px solid var(--line);padding-top:4px}
+.phases span:nth-child(1){grid-column:span 2}
+.phases span.on{color:var(--ink);border-top-color:var(--pink)}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.tab{display:flex;align-items:center;justify-content:center;gap:7px;min-height:46px;padding:6px 6px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;font:600 14px var(--font-body);cursor:pointer}
+.tab i{font-style:normal;display:inline-grid;place-items:center;flex:0 0 22px;height:22px;border-radius:50%;background:var(--surface-2);font-size:12px;font-weight:800}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab[aria-selected="true"] i{background:var(--yellow);color:var(--on-yellow)}
+.tab.done i{background:var(--ok);color:var(--surface)}
+:root[data-theme="dark"] .tab.done i{color:#10102A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tab.done i{color:#10102A}}
+
+/* layout */
+.panel{padding-top:22px}
+.split{display:grid;gap:26px}
+@media (min-width:880px){.split{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}}
+.stagecol,.ctrlcol{min-width:0}
+.ctrlcol>*+*{margin-top:18px}
+.lbl{font-size:14px;font-weight:700;color:var(--ink-2);margin-bottom:7px}
+.hint{color:var(--ink-2);font-size:15px}
+.credit{color:var(--ink-2);font-size:14px}
+
+/* stage */
+.stage{position:relative;border-radius:24px;overflow:hidden;background:var(--stage);aspect-ratio:300/350;width:100%;max-height:560px}
+.stage>svg{display:block;width:100%;height:100%}
+.stage-tag{position:absolute;right:12px;top:12px;background:rgba(255,255,255,.14);color:#fff;padding:5px 12px;border-radius:99px;font-size:14px;font-weight:700;max-width:60%;text-align:right}
+.stage-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.stage-opts{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-top:12px}
+.scrub{flex:1 1 140px;min-width:120px}
+input[type=range]{width:100%;accent-color:var(--pink);min-height:32px}
+.check{display:inline-flex;align-items:center;gap:8px;min-height:40px;font-weight:500;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--pink)}
+.swatches{display:flex;gap:8px}
+.sw{width:36px;height:36px;border-radius:50%;border:3px solid var(--surface);box-shadow:0 0 0 1.5px var(--line);cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
+.mir{fill:rgba(255,255,255,.035)}.mir2{fill:rgba(255,255,255,.07)}
+.floor{fill:rgba(255,255,255,.07)}
+.tape{stroke-width:3.5;stroke-linecap:round}
+.tape-y{stroke:var(--tape-y)}.tape-p{stroke:var(--tape-p)}
+.shadow{fill:rgba(0,0,0,.5)}
+.limb{fill:none;stroke:var(--costume);stroke-linecap:round;stroke-linejoin:round}
+.arm{stroke-width:9}
+.leg{stroke-width:12;stroke:var(--costume-2)}
+.torso{stroke-width:32}
+.pelvis{stroke-width:22;stroke:var(--costume-2)}
+.shoulder{stroke-width:14}
+.skin{fill:var(--skin)}
+.neck{stroke:var(--skin);stroke-width:9;stroke-linecap:round}
+.hair{fill:var(--hair)}
+.feature{fill:#2A1B2D}
+.mouth{fill:none;stroke:#2A1B2D;stroke-width:1.8;stroke-linecap:round}
+.trail{fill:none;stroke:var(--tape-y);stroke-width:4;stroke-linecap:round;stroke-dasharray:.1 8}
+/* close-up kepala */
+.cap{fill:rgba(255,255,255,.78);font:600 12px var(--font-body)}
+.pn{stroke:rgba(255,255,255,.16);stroke-width:1.5}
+.limb.hc-sh{stroke-width:50}
+.neck.hc-neck{stroke-width:24}
+.hc-torso{fill:var(--costume)}
+.ear{fill:var(--skin);stroke:rgba(0,0,0,.28);stroke-width:1.5}
+.htrail{fill:none;stroke:var(--tape-y);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;opacity:.95}
+.tdot{fill:var(--tape-y);stroke:#1E1B3F;stroke-width:1.5}
+.hc-face .mouth{stroke-width:3}
+
+/* controls */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:8px 15px;border-radius:99px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:600 15px var(--font-body);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.chips.parts .chip{border-radius:10px;font-weight:700}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.seg button{min-height:44px;border:0;background:transparent;color:var(--ink);font:600 15px var(--font-body);cursor:pointer;padding:6px 8px}
+.seg button+button{border-left:1.5px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.two{display:grid;gap:14px}
+@media (min-width:520px){.two{grid-template-columns:1fr 1fr}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 18px;border-radius:10px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);font:700 15px var(--font-body);cursor:pointer;text-align:center}
+.btn.primary{background:var(--pink);border-color:var(--pink);color:var(--on-accent)}
+.btn.small{min-height:40px;padding:6px 14px}
+.chip:focus-visible,.tab:focus-visible,.seg button:focus-visible,.btn:focus-visible,.opt:focus-visible,.slot:focus-visible,.sw:focus-visible,.check input:focus-visible,input[type=range]:focus-visible,.sb-row input:focus-visible,.thumb button:focus-visible,.thumb img:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+/* observation */
+.obs{border-top:1.5px solid var(--line);padding-top:16px}
+.obs dl{margin:12px 0 0;display:grid;gap:12px}
+.obs dt{font-weight:700;font-size:15px}
+.obs dd{margin:2px 0 0;color:var(--ink-2);font-size:15px}
+.obs .g{border-left:4px solid var(--line);padding-left:12px}
+.seen{font-size:15px;color:var(--ink-2)}
+.seen b{color:var(--ink)}
+
+/* quiz */
+.qhead{display:flex;flex-wrap:wrap;gap:6px 16px;font-weight:700;color:var(--ink-2);margin-bottom:10px;font-size:15px}
+#qText{margin-bottom:14px}
+.opt{display:block;width:100%;text-align:left;min-height:52px;padding:12px 16px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:600 16px var(--font-body);cursor:pointer;margin-bottom:10px}
+.opt:disabled{cursor:default;color:var(--ink)}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.fb{margin:6px 0 14px;padding:12px 14px;border-radius:10px;background:var(--surface-2);font-size:15px}
+.fb b{display:block;margin-bottom:2px}
+#quizResult h2{margin-bottom:8px}
+#quizResult .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+
+/* slots */
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{position:relative;min-height:100px;border:1.5px dashed var(--line);background:var(--surface);border-radius:10px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:600 13px var(--font-body);color:var(--ink);cursor:pointer;text-align:center;overflow-wrap:anywhere}
+.slot .n{font:800 17px var(--font-display);color:var(--ink-2)}
+.slot .hd{font-size:11px;font-weight:600;color:var(--ink-2);min-height:14px}
+.slot.filled{border-style:solid}
+.slot.sel{border:3px solid var(--ink);padding:4.5px 2.5px}
+.slot.now{background:var(--yellow);border-color:var(--yellow);color:var(--on-yellow)}
+.slot.now .n,.slot.now .hd{color:var(--on-yellow)}
+.lvtag{font-size:11px;font-weight:700;padding:1px 8px;border-radius:99px}
+.lv-rendah{background:var(--blue);color:var(--on-accent)}
+.lv-sedang{background:var(--green);color:var(--on-accent)}
+.lv-tinggi{background:var(--yellow);color:var(--on-yellow)}
+.chal ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.chal li{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.chal li .mk{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:800;margin-top:1px}
+.chal li.ok .mk{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.chal li.ok{color:var(--ink)}
+.chal li:not(.ok){color:var(--ink-2)}
+#chalMsg{margin-top:10px;font-weight:600}
+.floorbox{margin-top:18px;border-top:1.5px solid var(--line);padding-top:14px}
+#floorMap{display:block;width:100%;max-width:420px;height:auto;margin:6px 0 10px}
+.fm-bg{fill:var(--surface-2)}
+.fm-lbl{fill:var(--ink-2);font:600 11px var(--font-body)}
+.fm-path{fill:none;stroke:var(--ink-2);stroke-width:2;stroke-dasharray:3 5;stroke-linecap:round}
+.fm-start{fill:none;stroke:var(--ink-2);stroke-width:2}
+.dot.rendah{fill:var(--blue)}.dot.sedang{fill:var(--green)}.dot.tinggi{fill:var(--yellow)}
+.dot.sel{stroke:var(--ink);stroke-width:2.5}
+.dot-t{font:800 9px var(--font-body);text-anchor:middle;pointer-events:none}
+.dot-t.rendah,.dot-t.sedang{fill:var(--on-accent)}.dot-t.tinggi{fill:var(--on-yellow)}
+.fm-marker{fill:var(--pink);stroke:var(--surface);stroke-width:2.5}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--ink-2);margin-bottom:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+
+/* stop motion */
+.brief{border-left:6px solid var(--pink);padding-left:16px}
+.brief p{color:var(--ink-2);margin-top:8px;max-width:64ch}
+.steps{margin:14px 0 0;padding-left:0;list-style:none;display:grid;gap:10px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--bg);font:800 15px var(--font-display)}
+.steps b{display:block}
+.steps span{color:var(--ink-2);font-size:15px}
+.reqs{margin:14px 0 0;padding-left:20px;color:var(--ink);display:grid;gap:4px;font-size:15px}
+.sec{margin-top:34px;border-top:1.5px solid var(--line);padding-top:20px}
+.sec>h2{margin-bottom:6px}
+.sb{display:grid;gap:8px;margin-top:14px}
+@media (min-width:760px){.sb{grid-template-columns:1fr 1fr}}
+.sb-row{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:center}
+.sb-n{font:800 16px var(--font-display);color:var(--ink-2);text-align:center}
+.sb-row input{width:100%;min-height:44px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:8px 12px;font:500 15px var(--font-body)}
+.sm-grid{display:grid;gap:20px;margin-top:14px}
+@media (min-width:880px){.sm-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.sm-wrap{position:relative}
+.sm-canvas{display:block;width:100%;aspect-ratio:4/3;border-radius:16px;background:var(--stage)}
+.sm-empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;color:#fff;font-weight:600}
+.sm-empty span{max-width:28ch;opacity:.9}
+.strip{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px}
+.thumb{position:relative;flex:0 0 auto;width:112px;border-radius:10px;overflow:hidden;border:2.5px solid var(--line);background:var(--surface)}
+.thumb.cur{border-color:var(--pink)}
+.thumb img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;cursor:pointer}
+.thumb .no{position:absolute;left:6px;top:6px;background:rgba(0,0,0,.65);color:#fff;font:700 12px var(--font-body);padding:1px 8px;border-radius:99px}
+.thumb .tb{display:flex}
+.thumb .tb button{flex:1;min-height:40px;border:0;border-top:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font-size:16px}
+.thumb .tb button+button{border-left:1.5px solid var(--line)}
+.fps{display:flex;align-items:center;gap:12px;margin:12px 0}
+.fps label{font-weight:600;white-space:nowrap}
+#fpsVal{font-weight:700;min-width:64px}
+.smmsg{color:var(--ink-2);font-size:15px;margin-top:8px}
+.tips{margin:10px 0 0;padding-left:20px;color:var(--ink-2);font-size:15px;display:grid;gap:4px}
+fieldset.rub{border:0;border-top:1.5px solid var(--line);margin:0;padding:14px 0}
+.rub legend{padding:0;font-weight:700;float:left;width:100%}
+.rub .d{clear:both;color:var(--ink-2);font-size:15px;margin:2px 0 10px}
+.pills{display:flex;gap:8px}
+.pill{position:relative}
+.pill input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.pill span{display:grid;place-items:center;min-width:48px;min-height:44px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);font-weight:700}
+.pill input:checked+span{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.pill input:focus-visible+span{outline:3px solid var(--blue);outline-offset:2px}
+#rubTotal{margin-top:8px;font-weight:700;font-size:17px}
+.foot{margin-top:40px;color:var(--ink-2);font-size:14px}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>Peta Gerak</h1>
+  <p>Media belajar gerak dasar tari bebas untuk Seni Budaya kelas 11. Kamu tidak perlu meniru siapa pun: amati geraknya, latih rasanya, lalu ciptakan koreografimu sendiri.</p>
+</header>
+
+<div class="nav" id="nav">
+  <div class="phases" aria-hidden="true"><span id="ph1" class="on">Mengamati</span><span id="ph2">Berlatih</span><span id="ph3">Mencipta</span></div>
+  <div class="tabs" role="tablist" aria-label="Tahapan belajar">
+    <button class="tab" role="tab" id="t-amati" data-tab="amati" aria-selected="true" aria-controls="p-amati"><i>1</i><span>Amati</span></button>
+    <button class="tab" role="tab" id="t-tebak" data-tab="tebak" aria-selected="false" aria-controls="p-tebak"><i>2</i><span>Tebak</span></button>
+    <button class="tab" role="tab" id="t-susun" data-tab="susun" aria-selected="false" aria-controls="p-susun"><i>3</i><span>Susun</span></button>
+    <button class="tab" role="tab" id="t-cipta" data-tab="cipta" aria-selected="false" aria-controls="p-cipta"><i>4</i><span>Cipta</span></button>
+  </div>
+</div>
+
+<main id="panels">
+
+<!-- TAHAP 1: AMATI -->
+<section class="panel" id="p-amati" role="tabpanel" aria-labelledby="t-amati">
+  <div class="split">
+    <div class="stagecol">
+      <div class="stage">
+        <svg id="svgAmati" viewBox="0 0 300 350" role="img" aria-label="Avatar penari memperagakan gerak dasar" hidden></svg>
+        <svg id="svgHead" viewBox="0 0 300 350" role="img" aria-label="Kepala avatar dilihat dari depan dan dari samping"></svg>
+        <span class="stage-tag" id="nowTag"></span>
+      </div>
+      <div class="stage-bar">
+        <button class="btn small" id="btnPause" type="button">Jeda</button>
+        <label class="scrub"><span class="sr-only">Geser untuk melihat pose satu per satu</span><input type="range" id="scrub" min="0" max="1000" value="0"></label>
+      </div>
+      <div class="stage-opts">
+        <label class="check"><input type="checkbox" id="trailToggle" checked> Tampilkan jejak</label>
+        <div class="swatches" id="swatches" role="group" aria-label="Warna kostum avatar"></div>
+      </div>
+    </div>
+    <div class="ctrlcol">
+      <h2>Pilih bagian tubuh dan geraknya</h2>
+      <div class="chips parts" id="partChips" role="group" aria-label="Bagian tubuh"></div>
+      <div class="chips" id="moveChips" role="group" aria-label="Gerak"></div>
+      <p class="credit" id="partNote"></p>
+      <div id="dirWrap" hidden><div class="lbl">Arah putaran, dilihat dari tampak depan</div><div class="seg" id="segDir"></div></div>
+      <div><div class="lbl">Tempo</div><div class="seg" id="segTempo"></div></div>
+      <div><div class="lbl">Tenaga</div><div class="seg" id="segTenaga"></div></div>
+      <div id="levelWrap" hidden><div class="lbl">Level</div><div class="seg" id="segLevel"></div></div>
+      <div class="obs">
+        <h3>Yang bisa kamu amati</h3>
+        <dl id="obs"></dl>
+      </div>
+      <p class="seen" id="seenText"></p>
+      <button class="btn primary" type="button" data-go="tebak">Lanjut ke Tebak Gerak</button>
+    </div>
+  </div>
+</section>
+
+<!-- TAHAP 2: TEBAK -->
+<section class="panel" id="p-tebak" role="tabpanel" aria-labelledby="t-tebak" hidden>
+  <div class="split">
+    <div class="stagecol">
+      <div class="stage">
+        <svg id="svgTebak" viewBox="0 0 300 350" role="img" aria-label="Avatar penari untuk kuis tebak gerak" hidden></svg>
+        <svg id="svgTebakHead" viewBox="0 0 300 350" role="img" aria-label="Kepala avatar untuk kuis tebak gerak"></svg>
+      </div>
+      <div class="stage-opts">
+        <label class="check"><input type="checkbox" id="quizTrail"> Tampilkan jejak sebagai petunjuk</label>
+      </div>
+    </div>
+    <div class="ctrlcol">
+      <div id="quizBody">
+        <div class="qhead"><span id="qMeta"></span><span id="qScore"></span><span id="qStreak"></span></div>
+        <h2 id="qText"></h2>
+        <div id="qOpts" style="margin-top:14px"></div>
+        <div class="fb" id="qFb" hidden aria-live="polite"></div>
+        <button class="btn primary" id="qNext" type="button" hidden></button>
+      </div>
+      <div id="quizResult" hidden>
+        <h2 id="resTitle"></h2>
+        <p id="resText" class="hint"></p>
+        <div class="btnrow">
+          <button class="btn primary" type="button" id="btnRestart">Main lagi</button>
+          <button class="btn" type="button" data-go="amati">Amati lagi di Tahap 1</button>
+          <button class="btn" type="button" data-go="susun">Lanjut ke Susun Koreografi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAHAP 3: SUSUN -->
+<section class="panel" id="p-susun" role="tabpanel" aria-labelledby="t-susun" hidden>
+  <div class="split">
+    <div class="stagecol">
+      <div class="stage"><svg id="svgSusun" viewBox="0 0 300 350" role="img" aria-label="Avatar penari memperagakan koreografi susunanmu"></svg><span class="stage-tag" id="susunTag"></span></div>
+      <div class="stage-bar">
+        <button class="btn primary" id="btnPlay" type="button">Putar koreografi</button>
+        <button class="btn" id="btnRandom" type="button">Acak</button>
+        <button class="btn" id="btnClear" type="button">Kosongkan</button>
+      </div>
+      <div class="floorbox">
+        <div class="lbl">Pola lantai, dilihat dari atas</div>
+        <svg id="floorMap" viewBox="0 0 240 172" role="img" aria-label="Denah pola lantai delapan hitungan"></svg>
+        <div class="legend"><span><i style="background:var(--blue)"></i>Level rendah</span><span><i style="background:var(--green)"></i>Level sedang</span><span><i style="background:var(--yellow)"></i>Level tinggi</span></div>
+        <div class="chips" id="patChips"></div>
+      </div>
+    </div>
+    <div class="ctrlcol">
+      <h2>Susun 8 hitungan</h2>
+      <p class="hint">Pilih satu hitungan, lalu pilih gerak badan, level, dan gerak kepalanya. Avatar langsung memperagakan pilihanmu.</p>
+      <div class="slots" id="slots"></div>
+      <div class="stage-bar" style="margin-top:0">
+        <button class="btn small" id="btnPrevSlot" type="button">Hitungan sebelumnya</button>
+        <button class="btn small" id="btnNextSlot" type="button">Hitungan berikutnya</button>
+      </div>
+      <div>
+        <div class="lbl" id="slotLabel"></div>
+        <div class="chips" id="palette"></div>
+      </div>
+      <div><div class="lbl">Level hitungan ini</div><div class="seg" id="segSlotLevel"></div></div>
+      <div>
+        <div class="lbl" id="headLabel"></div>
+        <div class="chips" id="paletteHead"></div>
+        <p class="credit" style="margin-top:8px">Kepala tampak kecil di panggung. Untuk melihat geraknya jelas, buka Tahap 1 dan pilih Kepala.</p>
+      </div>
+      <div class="two">
+        <div><div class="lbl">Tempo seluruh koreografi</div><div class="seg" id="segSeqTempo"></div></div>
+        <div><div class="lbl">Tenaga seluruh koreografi</div><div class="seg" id="segSeqTenaga"></div></div>
+      </div>
+      <div class="chal obs">
+        <h3>Tantangan koreografer</h3>
+        <ul id="challenges"></ul>
+        <p id="chalMsg" aria-live="polite"></p>
+      </div>
+      <button class="btn primary" type="button" data-go="cipta">Lanjut ke proyek stop motion</button>
+    </div>
+  </div>
+</section>
+
+<!-- TAHAP 4: CIPTA -->
+<section class="panel" id="p-cipta" role="tabpanel" aria-labelledby="t-cipta" hidden>
+  <div class="brief">
+    <h2>Tugas akhir: koreografi stop motion</h2>
+    <p>Wujudkan koreografi 8 hitunganmu sebagai animasi stop motion. Geraknya kamu peragakan sendiri, difoto pose demi pose, lalu diputar berurutan sampai terlihat bergerak.</p>
+    <ol class="steps">
+      <li><div><b>Rancang</b><span>Tulis pose tiap hitungan di storyboard. Kamu bisa mengambilnya dari koreografi di Tahap 3.</span></div></li>
+      <li><div><b>Potret</b><span>Peragakan satu pose, foto, geser sedikit tubuhmu, foto lagi. Ulangi sampai seluruh hitungan selesai.</span></div></li>
+      <li><div><b>Putar</b><span>Susun foto di bawah, atur kecepatannya, lalu periksa apakah geraknya mengalir.</span></div></li>
+      <li><div><b>Pamerkan</b><span>Rekam layar atau susun video di aplikasi suntingan, lalu presentasikan dan nilai karyamu dengan rubrik.</span></div></li>
+    </ol>
+    <ul class="reqs">
+      <li>Memakai minimal 4 gerak dasar yang berbeda, termasuk sedikitnya 2 gerak kepala.</li>
+      <li>Memuat ketiga level: rendah, sedang, dan tinggi.</li>
+      <li>Punya pola lantai yang jelas dan minimal 24 foto.</li>
+    </ul>
+  </div>
+
+  <div class="sec">
+    <h2>1. Rancang storyboard</h2>
+    <p class="hint">Satu baris untuk satu hitungan. Tulis pose atau gerak yang akan kamu foto.</p>
+    <div class="stage-bar"><button class="btn" id="btnFromSeq" type="button">Ambil dari koreografi Tahap 3</button></div>
+    <div class="sb" id="sbList"></div>
+  </div>
+
+  <div class="sec">
+    <h2>2. Potret dan putar</h2>
+    <p class="hint">Foto tetap tersimpan di perangkatmu dan tidak dikirim ke mana pun. Tumpu ponsel agar posisi kamera tidak bergeser.</p>
+    <div class="sm-grid">
+      <div>
+        <div class="sm-wrap">
+          <canvas class="sm-canvas" id="smCanvas" width="640" height="480" aria-label="Pratinjau stop motion"></canvas>
+          <div class="sm-empty" id="smEmpty"><span>Belum ada foto. Ambil foto pose pertamamu untuk mulai.</span></div>
+        </div>
+        <div class="fps">
+          <label for="fpsRange">Kecepatan</label>
+          <input type="range" id="fpsRange" min="1" max="12" value="6">
+          <span id="fpsVal">6 foto/detik</span>
+        </div>
+        <div class="stage-bar">
+          <button class="btn primary" id="btnSmPlay" type="button">Putar</button>
+          <button class="btn" id="btnClearFrames" type="button">Hapus semua foto</button>
+        </div>
+      </div>
+      <div>
+        <div class="stage-bar" style="margin-top:0">
+          <label class="btn primary" for="fileCam">Ambil foto</label>
+          <label class="btn" for="fileGallery">Pilih dari galeri</label>
+          <input class="sr-only" type="file" id="fileCam" accept="image/*" capture="environment">
+          <input class="sr-only" type="file" id="fileGallery" accept="image/*" multiple>
+        </div>
+        <p class="smmsg" id="smInfo"></p>
+        <div class="lbl" style="margin-top:14px">Urutan foto</div>
+        <div class="strip" id="strip"></div>
+        <ul class="tips">
+          <li>Gerak kecil di tiap foto membuat animasi lebih halus.</li>
+          <li>Pakai cahaya yang sama dan latar polos.</li>
+          <li>Enam sampai delapan foto per detik sudah terasa mengalir.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>3. Nilai karyamu</h2>
+    <p class="hint">Pilih angka 1 sampai 4: 1 perlu berkembang, 2 cukup, 3 baik, 4 sangat baik.</p>
+    <div id="rubric"></div>
+    <p id="rubTotal"></p>
+  </div>
+</section>
+
+</main>
+
+<p class="foot">Prototipe media pembelajaran Seni Budaya. Nama dan penjelasan gerak kepala, tangan, dan kaki mengacu pada rangkaian video tutorial gerak tari tradisional oleh Ocin Noi. Gerak avatar dibuat dari pose sederhana agar siswa fokus pada ruang, waktu, dan tenaga; detail jari, pergelangan tangan, dan posisi duduk atau berlutut belum ditampilkan.</p>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- util ---------- */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const D=Math.PI/180, TP=Math.PI*2, S=Math.sin, C=Math.cos;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const smooth=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
+const pts=a=>a.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');
+const setA=(el,o)=>{for(const k in o)el.setAttribute(k,o[k]);};
+
+/* ---------- data gerak ---------- */
+const HEADKEYS=['head','hYaw','hPitch','hX','hY','hZ'];
+const KEYS=['lUA','lFA','rUA','rFA','lTh','lSh','rTh','rSh','torso','dx','lift','tip'].concat(HEADKEYS);
+const NEUTRAL={lUA:8,lFA:4,rUA:8,rFA:4,lTh:5,lSh:5,rTh:5,rSh:5,torso:0,head:0,hYaw:0,hPitch:0,hX:0,hY:0,hZ:0,dx:0,lift:0,tip:0};
+const mk=o=>Object.assign({},NEUTRAL,o);
+const MOVES={
+  baplang:{part:'tangan',name:'Baplang',short:'Baplang',bagian:'Kedua lengan',arah:'Terbuka ke samping, setinggi bahu',
+    desc:'Kedua lengan terbuka lebar ke samping pada ketinggian yang sama, sebagai sikap dasar tangan.',
+    tut:'Bentangkan kedua lengan lurus ke samping setinggi bahu, telapak tangan menghadap bawah, lalu tahan.',
+    A:mk({lUA:94,lFA:84,rUA:94,rFA:84}),
+    B:mk({lUA:100,lFA:92,rUA:100,rFA:92})},
+  sembada:{part:'tangan',name:'Sembada',short:'Sembada',bagian:'Kedua lengan',arah:'Satu tangan naik tinggi, satu tangan di samping, lalu bertukar',
+    desc:'Tangan kanan dan kiri berbeda ketinggian, satu terangkat tinggi dan satu terbuka ke samping, lalu bergantian.',
+    tut:'Angkat satu tangan tinggi ke atas sambil tangan lain terbuka ke samping, lalu tukar posisi keduanya.',
+    A:mk({rUA:150,rFA:150,lUA:92,lFA:84,torso:-4}),
+    B:mk({lUA:150,lFA:150,rUA:92,rFA:84,torso:4})},
+  nyawang:{part:'tangan',name:'Nyawang',short:'Nyawang',bagian:'Satu lengan dan pergelangan dekat alis',
+    arah:'Tangan terangkat dekat alis, seperti memandang jauh, bergantian sisi',
+    desc:'Satu tangan diangkat sampai dekat alis seperti memandang ke kejauhan, tangan lain turun santai di samping badan.',
+    tut:'Angkat satu tangan sampai dekat alis seperti menaungi mata, pandangan ikut mengarah ke tangan.',
+    A:mk({rUA:128,rFA:150,lUA:18,lFA:16,head:-6,torso:2}),
+    B:mk({lUA:128,lFA:150,rUA:18,rFA:16,head:6,torso:-2})},
+  sembah:{part:'tangan',name:'Sembah',short:'Sembah',bagian:'Kedua lengan dan kepala',arah:'Kedua tangan bertemu di depan wajah, tubuh membungkuk sedikit',
+    desc:'Kedua tangan diangkat bertemu di depan wajah dekat hidung, dengan tubuh membungkuk sedikit sebagai sikap hormat.',
+    tut:'Satukan kedua telapak tangan di depan hidung, lalu bungkukkan badan sedikit.',
+    A:mk({lUA:52,lFA:132,rUA:52,rFA:132,torso:7,head:9}),
+    B:mk({lUA:60,lFA:140,rUA:60,rFA:140,torso:13,head:15})},
+  ngaca:{part:'tangan',name:'Ngaca',short:'Ngaca',bagian:'Satu lengan di depan wajah',arah:'Tangan terangkat di depan wajah seperti memegang cermin, bergantian sisi',
+    desc:'Satu tangan diangkat di depan wajah seperti sedang bercermin, kepala mengikuti arah pandang ke tangan.',
+    tut:'Angkat satu tangan di depan wajah setinggi mata seperti memegang cermin, kepala mengikuti arah tangan.',
+    A:mk({rUA:108,rFA:142,lUA:16,lFA:10,head:-8,torso:2}),
+    B:mk({lUA:108,lFA:142,rUA:16,rFA:10,head:8,torso:-2})},
+  mahkutaan:{part:'tangan',name:'Mahkutaan',short:'Mahkutaan',bagian:'Kedua lengan di atas kepala',arah:'Kedua tangan di atas kepala membentuk mahkota',
+    desc:'Kedua tangan diangkat tinggi di atas kepala, membentuk lengkungan seperti mahkota.',
+    tut:'Angkat kedua tangan tinggi di atas kepala, lengkungkan membentuk mahkota.',
+    A:mk({lUA:164,lFA:170,rUA:164,rFA:170}),
+    B:mk({lUA:150,lFA:158,rUA:150,rFA:158})},
+  ngumis:{part:'tangan',name:'Ngumis',short:'Ngumis',bagian:'Satu lengan di area wajah',arah:'Tangan bergerak di dekat area wajah, bergantian sisi',
+    desc:'Satu tangan bergerak di area wajah dekat bibir atas, tangan lain turun santai di samping badan.',
+    tut:'Gerakkan satu tangan di dekat bibir atas seperti menyentuh kumis, tangan lain turun santai.',
+    A:mk({rUA:98,rFA:158,lUA:16,lFA:10,head:-4}),
+    B:mk({lUA:98,lFA:158,rUA:16,rFA:10,head:4})},
+  goyang:{part:'badan',name:'Goyang Badan',short:'Goyang',bagian:'Batang tubuh dan pinggul',arah:'Ke samping, kiri lalu kanan',
+    desc:'Berat badan berpindah ke kiri dan kanan, tubuh dan kepala ikut miring.',
+    tut:'Pindahkan berat badan ke satu sisi sambil memiringkan tubuh dan kepala, lalu pindah ke sisi lain.',
+    A:mk({torso:-13,head:7,dx:-10,lUA:38,lFA:48,rUA:12,rFA:24,lTh:14,rTh:2}),
+    B:mk({torso:13,head:-7,dx:10,rUA:38,rFA:48,lUA:12,lFA:24,rTh:14,lTh:2})},
+  langkah:{part:'kaki',name:'Langkah Samping',short:'Langkah',bagian:'Kaki dan tumpuan berat badan',arah:'Ke samping, berpindah tumpuan',
+    desc:'Satu kaki melangkah ke samping sementara kaki lain menjadi tumpuan, lalu bergantian.',
+    tut:'Melangkah ke samping dengan satu kaki, pindahkan berat badan ke kaki itu, lalu susulkan kaki lainnya.',
+    A:mk({lTh:34,lSh:24,rTh:2,rSh:2,dx:10,torso:4,lUA:30,lFA:22,rUA:30,rFA:22}),
+    B:mk({rTh:34,rSh:24,lTh:2,lSh:2,dx:-10,torso:-4,lUA:30,lFA:22,rUA:30,rFA:22})},
+  adeg:{part:'kaki',name:'Adeg-adeg',short:'Adeg-adeg',bagian:'Kedua kaki dan lutut',arah:'Berdiri kuda-kuda, kaki membentuk huruf V, lutut menekuk',
+    desc:'Sikap kuda-kuda dasar: kedua kaki melebar membentuk huruf V dengan lutut menekuk (nyorengkuh), tubuh tetap tegak.',
+    tut:'Buka kedua kaki lebih lebar dari bahu, tekuk lutut ke luar membentuk huruf V, punggung tetap tegak.',
+    pakai:'Lebar kaki dan kegagahannya berbeda antara gaya penari putri dan putra.',
+    A:mk({lTh:42,lSh:26,rTh:42,rSh:26}),
+    B:mk({lTh:48,lSh:32,rTh:48,rSh:32})},
+  seser:{part:'kaki',name:'Seser',short:'Seser',bagian:'Kedua kaki, berpindah tempat',arah:'Bergeser ke samping, kaki tetap dekat ke lantai',
+    desc:'Berpindah tempat ke samping dengan langkah kecil dan kaki bergeser dekat ke lantai, bukan melangkah lebar.',
+    tut:'Geser satu kaki ke samping tanpa mengangkatnya tinggi, lalu susulkan kaki lainnya mendekat.',
+    pakai:'Perkiraan sederhana; lebar dan kegagahan gesernya berbeda pada gaya putri dan putra.',
+    A:mk({lTh:20,lSh:12,rTh:6,rSh:6,dx:7,torso:2}),
+    B:mk({rTh:20,rSh:12,lTh:6,lSh:6,dx:-7,torso:-2})},
+  lompat:{part:'kaki',name:'Lompat Kecil',short:'Lompat',bagian:'Seluruh tubuh, terutama kaki',arah:'Ke atas, lalu kembali ke lantai',
+    desc:'Lutut ditekuk sebagai tolakan, lalu tubuh terangkat dengan lengan terbuka ke atas.',
+    tut:'Tekuk lutut untuk bersiap, tolakkan badan ke atas sambil membuka kedua lengan, mendarat dengan lutut lentur.',
+    A:mk({lTh:36,rTh:36,lSh:0,rSh:0,lUA:30,lFA:22,rUA:30,rFA:22}),
+    B:mk({lTh:4,rTh:4,lSh:4,rSh:4,lift:19,tip:1,lUA:120,lFA:130,rUA:120,rFA:130})}
+};
+/* gerak kepala (video tutorial gerak tari tradisional oleh Ocin).
+   fn(p,dir): p = fase 0..1 pada satu putaran; mengembalikan pergeseran kepala.
+   head = miring (derajat), hYaw = menoleh, hPitch = mengangguk (positif: menunduk),
+   hX = geser kiri-kanan, hY = geser atas-bawah (positif: turun), hZ = maju ke arah penonton. */
+const HM={
+  gileuk:{name:'Gileuk',trace:'dagu',beats:4,
+    arah:'Dagu menggambar angka delapan tidur',
+    desc:'Kepala berputar mengikuti dagu yang menggambar angka delapan tidur.',
+    tut:'Putar dagu membentuk angka delapan tidur: ke satu sisi, turun ke tengah, lalu ke sisi lain.',
+    pakai:'Sering dipakai pada tari putri untuk kesan anggun.',
+    fn:p=>{const t=p*TP;return {hX:7*S(t),head:-12*S(t),hY:5*S(2*t)};}},
+  godeg:{name:'Godeg',trace:'dahi',beats:4,
+    arah:'Dahi menggambar angka delapan tidur',
+    desc:'Serupa Gileuk, tetapi titik geraknya ada di dahi, bukan di dagu.',
+    tut:'Sama seperti Gileuk, tetapi majukan dahi sedikit dan biarkan dahi yang memimpin putaran angka delapan.',
+    pakai:'Kepala sedikit menunduk sehingga dahi yang memimpin gerakan.',
+    fn:p=>{const t=p*TP;return {hX:7*S(t),head:12*S(t),hY:-5*S(2*t),hPitch:10};}},
+  kedet:{name:'Kedet',trace:'dagu',beats:2,
+    arah:'Maju ke depan, lalu kembali ke posisi semula',
+    desc:'Kepala ditarik ke depan, lalu ditarik kembali ke posisi semula.',
+    tut:'Dorong dagu lurus ke depan, tahan sebentar, lalu tarik kembali ke posisi semula.',
+    pakai:'Paling jelas terlihat dari tampak samping.',
+    fn:p=>{const u=.5-.5*C(p*TP);return {hZ:12*u,hPitch:5*u,hY:2*u};}},
+  cengkat:{name:'Cengkat',trace:'dagu',beats:2,
+    arah:'Naik, dari menunduk sampai kepala tegak',
+    desc:'Kepala diangkat dari posisi menunduk.',
+    tut:'Mulai dengan kepala menunduk, lalu angkat perlahan sampai kepala tegak menghadap depan.',
+    pakai:'Perhatikan dagu yang naik dari dekat dada.',
+    fn:p=>{const u=.5-.5*C(p*TP);return {hPitch:30-36*u,hY:3-8*u,hZ:4-4*u};}},
+  uklek:{name:'Uklek',trace:'dagu',beats:3,
+    arah:'Naik ke atas dulu, lalu ditarik ke dalam',
+    desc:'Kebalikan Kedet: kepala diangkat ke atas terlebih dahulu, baru ditarik ke dalam.',
+    tut:'Angkat kepala ke atas dulu, tarik ke arah dalam menuju leher, baru turunkan perlahan.',
+    pakai:'Ada tiga tahap: angkat, tarik, lalu lepas.',
+    fn:p=>{const lift=smooth(p/.3)-smooth((p-.7)/.3),pull=smooth((p-.3)/.25)-smooth((p-.7)/.25);return {hY:-8*lift,hPitch:-12*lift,hZ:-10*pull};}},
+  galeong:{name:'Galeong',trace:'dagu',beats:4,hasDir:true,
+    arah:'Dagu berputar membentuk lingkaran',
+    desc:'Gerakan berputar menggunakan dagu, terbagi menjadi arah putar ke kanan dan ke kiri.',
+    tut:'Putar dagu membentuk lingkaran penuh, searah atau berlawanan jarum jam sesuai pilihanmu.',
+    pakai:'Coba kedua arah putaran dan bandingkan jejaknya.',
+    fn:(p,d)=>{const t=p*TP*d;return {hX:4*S(t),hY:6*C(t),head:-10*S(t),hYaw:5*S(t)};}},
+  galieur:{name:'Galieur',trace:'dagu',beats:4,
+    arah:'Memutar kepala mengelilingi leher',
+    desc:'Gerakan memutar kepala dengan fokus pada kelenturan otot leher.',
+    tut:'Putar kepala pelan mengelilingi leher, rasakan leher meregang di tiap sisi.',
+    pakai:'Kepala lebih banyak berputar di tempat daripada berpindah.',
+    fn:p=>{const t=p*TP;return {head:18*S(t),hPitch:14*C(t),hX:2*S(t),hY:-1.5*C(t)};}},
+  igeg:{name:'Igeg',trace:'dagu',beats:2,
+    arah:'Menggoyang ke kanan dan ke kiri',
+    desc:'Menggoyangkan kepala ke kanan dan ke kiri secara ritmis menggunakan otot leher.',
+    tut:'Goyangkan kepala cepat ke kanan lalu ke kiri; yang bergerak leher, wajah tetap menghadap depan.',
+    pakai:'Kepala tetap menghadap depan, yang bergeser adalah lehernya.',
+    fn:p=>{const t=p*TP;return {hX:9*S(t),head:3*S(t),hY:-1.5*C(2*t)};}},
+  ileung:{name:'Ileung (Oray Mentas)',short:'Ileung',trace:'dagu',beats:4,
+    arah:'Meliuk seperti ular yang menyeberang',
+    desc:'Gerakan meliuk-liuk seperti ular yang sedang menyeberang.',
+    tut:'Liukkan kepala membentuk huruf S, bergantian ke kanan dan kiri, mengalir seperti ular berjalan.',
+    pakai:'Juga dikenal dengan nama Oray Mentas.',
+    fn:p=>{const t=p*TP;return {hX:9*S(t),hY:3.5*S(2*t+.9),head:14*S(t-1),hYaw:10*S(t-.4)};}},
+  gebes:{name:'Gebes',trace:'dagu',beats:2,
+    arah:'Menoleh cepat ke kanan dan ke kiri',
+    desc:'Gerakan menoleh ke kanan dan ke kiri dengan cepat.',
+    tut:'Tolehkan kepala cepat ke satu sisi lalu cepat ke sisi lain, seperti mengintip kanan-kiri.',
+    pakai:'Biasanya ditemukan pada tari topeng.',
+    fn:p=>{const w=Math.tanh(4*S(p*TP));return {hYaw:32*w,head:-3*w};}}
+};
+Object.keys(HM).forEach(k=>{MOVES[k]=Object.assign({part:'kepala',short:HM[k].name,bagian:'Kepala dan leher'},HM[k]);});
+const ALL=Object.keys(MOVES);
+const HEAD_IDS=ALL.filter(k=>MOVES[k].fn);
+const BODY_IDS=ALL.filter(k=>!MOVES[k].fn);
+const PARTS=[['kepala','Kepala'],['tangan','Tangan'],['badan','Badan'],['kaki','Kaki']];
+const LEVELS=['rendah','sedang','tinggi'];
+const TEMPO=[['lambat','Lambat'],['sedang','Sedang'],['cepat','Cepat']];
+const TENAGA=[['lembut','Lembut'],['kuat','Kuat'],['patah','Patah-patah']];
+const LEVELOPT=[['rendah','Rendah'],['sedang','Sedang'],['tinggi','Tinggi']];
+const LBL={tempo:{lambat:'Lambat',sedang:'Sedang',cepat:'Cepat'},tenaga:{lembut:'Lembut',kuat:'Kuat',patah:'Patah-patah'},level:{rendah:'Rendah',sedang:'Sedang',tinggi:'Tinggi'}};
+const TXT={
+  tempo:{lambat:'Lambat: satu putaran gerak butuh waktu lama, suasananya tenang.',sedang:'Sedang: kecepatan santai, seperti berjalan biasa.',cepat:'Cepat: gerak berulang dalam waktu singkat, terasa lincah dan bersemangat.'},
+  tenaga:{lembut:'Lembut: gerak mengalir tanpa tekanan mendadak.',kuat:'Kuat: bergerak cepat lalu berhenti tegas, ada aksen di ujung gerak.',patah:'Patah-patah: gerak terpotong menjadi bagian-bagian kecil, seperti foto berurutan.'},
+  level:{rendah:'Rendah: lutut ditekuk, tubuh mendekati lantai.',sedang:'Sedang: tinggi tubuh normal, berdiri biasa.',tinggi:'Tinggi: berjinjit dengan lengan terangkat lebih tinggi.'}
+};
+const HALF={lambat:1400,sedang:800,cepat:420};
+const SLOT={lambat:2200,sedang:1500,cepat:900};
+const COSTUMES=[['Merah muda','#FF5CA8','#C23D7C'],['Biru','#4DA3FF','#2F74C2'],['Hijau','#3DDC97','#22A56D'],['Kuning','#FFD23F','#C99A14']];
+
+/* ---------- mesin pose ---------- */
+function ease(u,tn){
+  if(tn==='lembut')return .5-.5*Math.cos(Math.PI*u);
+  if(tn==='kuat'){const x=Math.min(1,u/.5)-1,c1=1.5,c3=c1+1;return 1+c3*x*x*x+c1*x*x;}
+  return Math.min(3,Math.floor(u*4))/3;
+}
+/* tenaga untuk gerak kepala: fase dipercepat, ditahan, atau dipatah-patah pada tiap ketukan */
+function warpP(p,tn,N){
+  if(tn==='lembut')return p;
+  const x=p*N,k=Math.floor(x),u=x-k;
+  return (k+ease(u,tn))/N;
+}
+function headParams(id,ph,tn,dir){
+  const mv=MOVES[id],hp=mv.fn(warpP(ph,tn,mv.beats),dir||1);
+  const o={head:0,hYaw:0,hPitch:0,hX:0,hY:0,hZ:0};
+  for(const k in hp)o[k]=hp[k];
+  return o;
+}
+function withHead(body,hp){const q=Object.assign({},body);HEADKEYS.forEach(k=>{q[k]=(q[k]||0)+hp[k];});return q;}
+function lerpPose(a,b,w){const p={};KEYS.forEach(k=>{p[k]=a[k]+(b[k]-a[k])*w;});return p;}
+function applyLevel(p,lv){
+  const q=Object.assign({},p);
+  if(lv==='rendah'){q.lTh=Math.max(q.lTh,36);q.rTh=Math.max(q.rTh,36);}
+  else if(lv==='tinggi'){
+    q.lift+=10;q.tip=1;
+    ['lUA','lFA','rUA','rFA'].forEach(k=>{if(q[k]>20)q[k]=Math.min(172,q[k]+20);});
+  }
+  return q;
+}
+function poseAtPhase(id,ph,tenaga,level,dir){
+  const mv=MOVES[id];
+  if(mv.fn)return withHead(NEUTRAL,headParams(id,ph,tenaga,dir));
+  let u,from,to;
+  if(ph<.5){u=ph*2;from=mv.A;to=mv.B;}else{u=(ph-.5)*2;from=mv.B;to=mv.A;}
+  return applyLevel(lerpPose(from,to,ease(u,tenaga)),level);
+}
+const L={torso:76,sh:24,hip:13,ua:46,fa:44,th:62,sn:60,head:19,neck:6};
+const FLOOR=312;
+function fk(p){
+  const t=p.torso*D,up=[Math.sin(t),-Math.cos(t)],rt=[Math.cos(t),Math.sin(t)];
+  const neck=[up[0]*L.torso,up[1]*L.torso];
+  const lS=[neck[0]-rt[0]*L.sh,neck[1]-rt[1]*L.sh],rS=[neck[0]+rt[0]*L.sh,neck[1]+rt[1]*L.sh];
+  const sl=(o,a,len)=>[o[0]-Math.sin(a*D)*len,o[1]+Math.cos(a*D)*len];
+  const sr=(o,a,len)=>[o[0]+Math.sin(a*D)*len,o[1]+Math.cos(a*D)*len];
+  const lH=[-L.hip,0],rH=[L.hip,0];
+  const lK=sl(lH,p.lTh,L.th),lA=sl(lK,p.lSh,L.sn),rK=sr(rH,p.rTh,L.th),rA=sr(rK,p.rSh,L.sn);
+  const lE=sl(lS,p.lUA,L.ua),lW=sl(lE,p.lFA,L.fa),rE=sr(rS,p.rUA,L.ua),rW=sr(rE,p.rFA,L.fa);
+  const hd=(p.torso+p.head)*D,hl=L.neck+L.head;
+  const hc=[neck[0]+Math.sin(hd)*hl,neck[1]-Math.cos(hd)*hl];
+  const oy=FLOOR-Math.max(lA[1],rA[1])-p.lift,ox=150+p.dx;
+  const T=q=>[q[0]+ox,q[1]+oy];
+  return {hipC:T([0,0]),neck:T(neck),lS:T(lS),rS:T(rS),lH:T(lH),rH:T(rH),lK:T(lK),lA:T(lA),rK:T(rK),rA:T(rA),lE:T(lE),lW:T(lW),rE:T(rE),rW:T(rW),hc:T(hc),hd:p.torso+p.head};
+}
+
+/* ---------- avatar seluruh tubuh ---------- */
+class Dancer{
+  constructor(svg){
+    const ns='http://www.w3.org/2000/svg';
+    const mkEl=(tag,at,parent)=>{const e=document.createElementNS(ns,tag);setA(e,at);(parent||svg).appendChild(e);return e;};
+    svg.textContent='';
+    for(let i=0;i<4;i++)mkEl('rect',{x:i*75,y:0,width:75,height:FLOOR+4,class:i%2?'mir mir2':'mir'});
+    mkEl('rect',{x:0,y:FLOOR+4,width:300,height:46,class:'floor'});
+    [[62,FLOOR+22,'tape-y'],[238,FLOOR+22,'tape-p']].forEach(([x,y,c])=>{
+      mkEl('line',{x1:x-9,y1:y-6,x2:x+9,y2:y+6,class:'tape '+c});
+      mkEl('line',{x1:x-9,y1:y+6,x2:x+9,y2:y-6,class:'tape '+c});
+    });
+    this.shadow=mkEl('ellipse',{cx:150,cy:FLOOR+4,rx:44,ry:7,class:'shadow'});
+    this.trailL=mkEl('polyline',{class:'trail'});this.trailR=mkEl('polyline',{class:'trail'});
+    this.legL=mkEl('polyline',{class:'limb leg'});this.legR=mkEl('polyline',{class:'limb leg'});
+    this.footL=mkEl('ellipse',{class:'skin'});this.footR=mkEl('ellipse',{class:'skin'});
+    this.pelvis=mkEl('line',{class:'limb pelvis'});
+    this.torso=mkEl('line',{class:'limb torso'});
+    this.shoulder=mkEl('line',{class:'limb shoulder'});
+    this.armL=mkEl('polyline',{class:'limb arm'});this.armR=mkEl('polyline',{class:'limb arm'});
+    this.handL=mkEl('circle',{r:5.5,class:'skin'});this.handR=mkEl('circle',{r:5.5,class:'skin'});
+    this.neck=mkEl('line',{class:'neck'});
+    this.head=mkEl('g',{});
+    mkEl('circle',{r:L.head,class:'skin'},this.head);
+    mkEl('path',{d:'M-19,-3 A19,19 0 0 1 19,-3 Q8,-11 -19,-3 Z',class:'hair'},this.head);
+    mkEl('circle',{cx:0,cy:-21,r:7,class:'hair'},this.head);
+    this.face=mkEl('g',{},this.head);
+    mkEl('circle',{cx:-6.5,cy:1,r:2,class:'feature'},this.face);
+    mkEl('circle',{cx:6.5,cy:1,r:2,class:'feature'},this.face);
+    mkEl('path',{d:'M-5,8 Q0,12 5,8',class:'mouth'},this.face);
+    this.trailOn=false;this.tl=[];this.tr=[];
+  }
+  clearTrail(){this.tl=[];this.tr=[];this.trailL.setAttribute('points','');this.trailR.setAttribute('points','');}
+  draw(p,record){
+    const j=fk(p);
+    this.legL.setAttribute('points',pts([j.lH,j.lK,j.lA]));
+    this.legR.setAttribute('points',pts([j.rH,j.rK,j.rA]));
+    const rx=10-4*p.tip,ry=5+4*p.tip;
+    setA(this.footL,{cx:j.lA[0],cy:j.lA[1]+3,rx:rx,ry:ry});
+    setA(this.footR,{cx:j.rA[0],cy:j.rA[1]+3,rx:rx,ry:ry});
+    setA(this.pelvis,{x1:j.lH[0],y1:j.lH[1],x2:j.rH[0],y2:j.rH[1]});
+    setA(this.torso,{x1:j.hipC[0],y1:j.hipC[1],x2:j.neck[0],y2:j.neck[1]});
+    setA(this.shoulder,{x1:j.lS[0],y1:j.lS[1],x2:j.rS[0],y2:j.rS[1]});
+    this.armL.setAttribute('points',pts([j.lS,j.lE,j.lW]));
+    this.armR.setAttribute('points',pts([j.rS,j.rE,j.rW]));
+    setA(this.handL,{cx:j.lW[0],cy:j.lW[1]});setA(this.handR,{cx:j.rW[0],cy:j.rW[1]});
+    const hx=j.hc[0]+p.hX,hy=j.hc[1]+p.hY,hs=1+p.hZ*0.012;
+    setA(this.neck,{x1:j.neck[0],y1:j.neck[1],x2:hx,y2:hy});
+    this.head.setAttribute('transform','translate('+hx.toFixed(1)+' '+hy.toFixed(1)+') rotate('+j.hd.toFixed(1)+') scale('+hs.toFixed(3)+')');
+    this.face.setAttribute('transform','translate('+(Math.sin(p.hYaw*D)*9).toFixed(1)+' '+(Math.sin(p.hPitch*D)*6).toFixed(1)+')');
+    setA(this.shadow,{cx:150+p.dx,rx:Math.max(18,44-p.lift*.7)});
+    this.shadow.style.opacity=Math.max(.25,.9-p.lift*.02);
+    if(this.trailOn&&record){
+      this.tl.push(j.lW);this.tr.push(j.rW);
+      if(this.tl.length>46){this.tl.shift();this.tr.shift();}
+      this.trailL.setAttribute('points',pts(this.tl));this.trailR.setAttribute('points',pts(this.tr));
+    }
+  }
+}
+
+/* ---------- close-up kepala: tampak depan dan samping ---------- */
+class HeadCam{
+  constructor(svg){
+    const ns='http://www.w3.org/2000/svg';
+    const mkEl=(tag,at,parent)=>{const e=document.createElementNS(ns,tag);setA(e,at);(parent||svg).appendChild(e);return e;};
+    svg.textContent='';
+    this.trailOn=false;this.tr={f:[],s:[]};
+    /* tampak depan */
+    const vf=mkEl('svg',{x:0,y:0,width:300,height:175,viewBox:'0 0 300 175'});
+    mkEl('text',{x:12,y:22,class:'cap'},vf).textContent='Tampak depan';
+    mkEl('line',{x1:70,y1:176,x2:230,y2:176,class:'limb hc-sh'},vf);
+    this.fNeck=mkEl('line',{class:'neck hc-neck'},vf);
+    this.fTrail=mkEl('polyline',{class:'htrail'},vf);
+    this.fHead=mkEl('g',{},vf);
+    mkEl('circle',{r:40,class:'skin'},this.fHead);
+    mkEl('path',{d:'M-40,-6 A40,40 0 0 1 40,-6 Q17,-23 -40,-6 Z',class:'hair'},this.fHead);
+    mkEl('circle',{cx:0,cy:-44,r:15,class:'hair'},this.fHead);
+    this.fFace=mkEl('g',{class:'hc-face'},this.fHead);
+    mkEl('circle',{cx:-13.5,cy:2,r:4,class:'feature'},this.fFace);
+    mkEl('circle',{cx:13.5,cy:2,r:4,class:'feature'},this.fFace);
+    mkEl('path',{d:'M-2,9 Q-6,17 1,18',class:'mouth'},this.fFace);
+    mkEl('path',{d:'M-11,24 Q0,31 11,24',class:'mouth'},this.fFace);
+    this.fDot=mkEl('circle',{r:5,class:'tdot'},vf);
+    /* tampak samping */
+    const vs=mkEl('svg',{x:0,y:175,width:300,height:175,viewBox:'0 0 300 175'});
+    mkEl('text',{x:12,y:22,class:'cap'},vs).textContent='Tampak samping';
+    mkEl('rect',{x:84,y:150,width:104,height:80,rx:30,class:'hc-torso'},vs);
+    this.sNeck=mkEl('line',{class:'neck hc-neck'},vs);
+    this.sTrail=mkEl('polyline',{class:'htrail'},vs);
+    this.sHead=mkEl('g',{},vs);
+    mkEl('circle',{r:40,class:'skin'},this.sHead);
+    mkEl('path',{d:'M22,-33 A40,40 0 0 0 -40,4 L-22,6 Q-14,-14 22,-33 Z',class:'hair'},this.sHead);
+    mkEl('circle',{cx:-36,cy:-22,r:14,class:'hair'},this.sHead);
+    mkEl('ellipse',{cx:-6,cy:6,rx:6,ry:9,class:'ear'},this.sHead);
+    mkEl('circle',{cx:20,cy:-6,r:3,class:'feature'},this.sHead);
+    mkEl('path',{d:'M38,-8 L50,6 L38,9 Z',class:'skin'},this.sHead);
+    mkEl('path',{d:'M28,20 Q34,23 38,20',class:'mouth'},this.sHead);
+    this.sDot=mkEl('circle',{r:5,class:'tdot'},vs);
+    mkEl('line',{x1:0,y1:175,x2:300,y2:175,class:'pn'});
+  }
+  clearTrail(){this.tr={f:[],s:[]};this.fTrail.setAttribute('points','');this.sTrail.setAttribute('points','');}
+  draw(hp,trace,rec,cum){
+    const k=2.1;
+    /* depan */
+    const fcx=150+hp.hX*k,fcy=88+hp.hY*k,fs=1+hp.hZ*0.018,fr=hp.head*D;
+    this.fHead.setAttribute('transform','translate('+fcx.toFixed(1)+' '+fcy.toFixed(1)+') rotate('+hp.head.toFixed(1)+') scale('+fs.toFixed(3)+')');
+    this.fFace.setAttribute('transform','translate('+(Math.sin(hp.hYaw*D)*24).toFixed(1)+' '+(Math.sin(hp.hPitch*D)*16).toFixed(1)+')');
+    setA(this.fNeck,{x1:150,y1:165,x2:fcx.toFixed(1),y2:(fcy+20*fs).toFixed(1)});
+    const lx=Math.sin(hp.hYaw*D)*14,ly=(trace==='dahi'?-34:40)+Math.sin(hp.hPitch*D)*10;
+    const fx=fcx+fs*(lx*Math.cos(fr)-ly*Math.sin(fr)),fy=fcy+fs*(lx*Math.sin(fr)+ly*Math.cos(fr));
+    setA(this.fDot,{cx:fx.toFixed(1),cy:fy.toFixed(1)});
+    /* samping */
+    const scx=140+hp.hZ*k,scy=88+hp.hY*k,sr=hp.hPitch*D;
+    this.sHead.setAttribute('transform','translate('+scx.toFixed(1)+' '+scy.toFixed(1)+') rotate('+hp.hPitch.toFixed(1)+')');
+    setA(this.sNeck,{x1:126,y1:172,x2:(scx-8).toFixed(1),y2:(scy+26).toFixed(1)});
+    const slx=trace==='dahi'?26:27,sly=trace==='dahi'?-30:28;
+    const sx=scx+(slx*Math.cos(sr)-sly*Math.sin(sr)),sy=scy+(slx*Math.sin(sr)+sly*Math.cos(sr));
+    setA(this.sDot,{cx:sx.toFixed(1),cy:sy.toFixed(1)});
+    /* jejak: satu putaran penuh */
+    if(this.trailOn){
+      if(rec){
+        const push=(arr,x,y)=>{arr.push([cum,x,y]);while(arr.length&&cum-arr[0][0]>1)arr.shift();};
+        push(this.tr.f,fx,fy);push(this.tr.s,sx,sy);
+      }
+      const str=a=>a.map(q=>q[1].toFixed(1)+','+q[2].toFixed(1)).join(' ');
+      this.fTrail.setAttribute('points',str(this.tr.f));this.sTrail.setAttribute('points',str(this.tr.s));
+    }else if(this.tr.f.length){this.clearTrail();}
+  }
+}
+
+/* ---------- adegan: avatar penuh atau close-up kepala ---------- */
+class Scene{
+  constructor(svgBody,svgHead){
+    this.svgBody=svgBody;this.svgHead=svgHead;
+    this.d=new Dancer(svgBody);this.cam=new HeadCam(svgHead);
+    this.move='gileuk';this.tempo='sedang';this.tenaga='lembut';this.level='sedang';this.dir=-1;
+    this.phase=0;this.cum=0;this.paused=false;this.onFrame=null;
+    this.setMove(this.move);
+  }
+  setMove(id){
+    this.move=id;this.phase=0;this.cum=0;this.d.clearTrail();this.cam.clearTrail();
+    const h=!!MOVES[id].fn;
+    this.svgBody.toggleAttribute('hidden',h);this.svgHead.toggleAttribute('hidden',!h);
+    this.render(false);
+  }
+  setTrail(on){this.d.trailOn=on;this.cam.trailOn=on;this.d.clearTrail();this.cam.clearTrail();}
+  tick(dt){
+    if(!this.paused){const dph=dt/(HALF[this.tempo]*2);this.phase=(this.phase+dph)%1;this.cum+=dph;}
+    this.render(!this.paused);
+  }
+  render(rec){
+    const mv=MOVES[this.move];
+    if(mv.fn)this.cam.draw(headParams(this.move,this.phase,this.tenaga,this.dir),mv.trace,rec,this.cum);
+    else this.d.draw(poseAtPhase(this.move,this.phase,this.tenaga,this.level),rec);
+    if(this.onFrame)this.onFrame(this.phase);
+  }
+}
+
+/* ---------- state & simpan ---------- */
+const KEY='peta-gerak-v2';
+const st={tempo:'sedang',tenaga:'lembut',pat:'lurus'};
+const seq=Array.from({length:8},()=>({m:null,lv:'sedang',h:null}));
+const prog={amati:false,tebak:false,susun:false,cipta:false};
+const story=Array(8).fill('');
+const rub=[0,0,0,0,0];
+let seen=[],best=0,costume=0,selSlot=0,pvSlot=0,nowSlot=-1;
+function save(){try{localStorage.setItem(KEY,JSON.stringify({st,seq,prog,story,rub,seen,best,costume}));}catch(e){}}
+function load(){
+  try{
+    const raw=localStorage.getItem(KEY);if(!raw)return;const d=JSON.parse(raw);
+    if(d.st){['tempo','tenaga','pat'].forEach(k=>{if(typeof d.st[k]==='string')st[k]=d.st[k];});}
+    if(!HALF[st.tempo])st.tempo='sedang';
+    if(!['lembut','kuat','patah'].includes(st.tenaga))st.tenaga='lembut';
+    if(!PAT[st.pat])st.pat='lurus';
+    if(Array.isArray(d.seq)&&d.seq.length===8)d.seq.forEach((s,i)=>{
+      s=s||{};
+      seq[i]={m:(MOVES[s.m]&&!MOVES[s.m].fn)?s.m:null,lv:LEVELS.includes(s.lv)?s.lv:'sedang',h:(MOVES[s.h]&&MOVES[s.h].fn)?s.h:null};
+    });
+    if(d.prog)Object.keys(prog).forEach(k=>{prog[k]=d.prog[k]===true;});
+    if(Array.isArray(d.story))d.story.slice(0,8).forEach((s,i)=>{story[i]=String(s).slice(0,120);});
+    if(Array.isArray(d.rub))d.rub.slice(0,5).forEach((v,i)=>{rub[i]=[1,2,3,4].includes(v)?v:0;});
+    if(Array.isArray(d.seen))seen=d.seen.filter(x=>MOVES[x]);
+    if(typeof d.best==='number')best=Math.max(0,Math.min(8,d.best));
+    if(Number.isInteger(d.costume)&&COSTUMES[d.costume])costume=d.costume;
+  }catch(e){}
+}
+
+/* ---------- komponen UI umum ---------- */
+function seg(el,opts,get,set){
+  el.innerHTML=opts.map(o=>'<button type="button" data-v="'+o[0]+'" aria-pressed="'+(get()===o[0])+'">'+o[1]+'</button>').join('');
+  el.onclick=e=>{
+    const b=e.target.closest('button');if(!b)return;
+    set(b.dataset.v);
+    $$('button',el).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+  };
+}
+function setCostume(i){
+  costume=i;
+  const r=document.documentElement.style;
+  r.setProperty('--costume',COSTUMES[i][1]);r.setProperty('--costume-2',COSTUMES[i][2]);
+  $$('#swatches .sw').forEach((b,k)=>b.setAttribute('aria-pressed',String(k===i)));
+  save();
+}
+function renderTabs(){
+  ['amati','tebak','susun','cipta'].forEach((k,i)=>{
+    const t=$('#t-'+k),ic=$('i',t);
+    t.classList.toggle('done',prog[k]);
+    ic.textContent=prog[k]?'\u2713':String(i+1);
+  });
+}
+function markDone(k){if(!prog[k]){prog[k]=true;renderTabs();save();}}
+
+/* ---------- TAHAP 1: amati ---------- */
+const sc1=new Scene($('#svgAmati'),$('#svgHead'));
+sc1.paused=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let curPart='kepala';
+const movesOfPart=p=>ALL.filter(k=>MOVES[k].part===p);
+function buildParts(){
+  $('#partChips').innerHTML=PARTS.map(p=>'<button type="button" class="chip" data-p="'+p[0]+'" aria-pressed="'+(p[0]===curPart)+'">'+p[1]+'</button>').join('');
+}
+function buildMoveChips(){
+  $('#moveChips').innerHTML=movesOfPart(curPart).map(id=>'<button type="button" class="chip" data-id="'+id+'" aria-pressed="'+(id===sc1.move)+'">'+MOVES[id].name+'</button>').join('');
+}
+function syncControls(){
+  const mv=MOVES[sc1.move],isHead=!!mv.fn;
+  $('#levelWrap').toggleAttribute('hidden',isHead);
+  $('#dirWrap').toggleAttribute('hidden',!mv.hasDir);
+  $('#partNote').textContent=isHead?'Sumber gerak kepala: video tutorial gerak tari tradisional oleh Ocin Noi. Titik kuning menandai dagu atau dahi yang dipantau.'
+    :curPart==='tangan'?'Sumber gerak tangan: video tutorial lanjutan oleh Ocin Noi. Ini pendekatan sederhana pada tingkat lengan; posisi jari (seperti Rumbai, Ngiting, Nyurupet) dan putaran pergelangan tangan (Ukel) belum bisa ditampilkan karena avatar belum punya jari dan sendi pergelangan.'
+    :curPart==='kaki'?'Sumber gerak kaki: video tutorial lanjutan oleh Ocin Noi. Hanya sikap berdiri yang ditampilkan; posisi duduk atau berlutut (Calik, Jengkeng, Deku, Depok) belum bisa digambarkan karena avatar ini hanya dibuat untuk berdiri.'
+    :'Contoh gerak umum untuk bagian ini.';
+}
+function renderObs(){
+  const m=MOVES[sc1.move],isHead=!!m.fn;
+  $('#nowTag').textContent=m.name;
+  let h='<div class="g"><dt>Cara melakukan</dt><dd>'+m.tut+'</dd></div>'
+    +'<div class="g"><dt>Bagian tubuh yang bergerak</dt><dd>'+m.bagian+'. '+m.desc+'</dd></div>';
+  if(isHead){
+    h+='<div class="g"><dt>Ruang</dt><dd>Arah gerak: '+m.arah+'. Bandingkan tampak depan dan tampak samping.</dd></div>';
+  }else{
+    h+='<div class="g"><dt>Ruang</dt><dd>Arah gerak: '+m.arah+'.<br>'+TXT.level[sc1.level]+'</dd></div>';
+  }
+  h+='<div class="g"><dt>Waktu</dt><dd>'+TXT.tempo[sc1.tempo]+'</dd></div>'
+    +'<div class="g"><dt>Tenaga</dt><dd>'+TXT.tenaga[sc1.tenaga]+'</dd></div>';
+  if(m.pakai)h+='<div class="g"><dt>Catatan</dt><dd>'+m.pakai+'</dd></div>';
+  $('#obs').innerHTML=h;
+  const nHead=seen.filter(x=>MOVES[x].fn).length;
+  $('#seenText').innerHTML='Gerak yang sudah kamu amati: <b>'+seen.length+' dari '+ALL.length+'</b> ('+nHead+' gerak kepala). Amati minimal 4 gerak, lalu uji matamu di Tebak Gerak.';
+}
+function markSeen(id){
+  if(!seen.includes(id)){seen.push(id);if(seen.length>=4)markDone('amati');save();}
+}
+function syncPauseBtn(){$('#btnPause').textContent=sc1.paused?'Lanjutkan':'Jeda';}
+function chooseMove(id){
+  sc1.setMove(id);
+  $$('#moveChips .chip').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.id===id)));
+  markSeen(id);syncControls();renderObs();
+}
+function initAmati(){
+  buildParts();buildMoveChips();
+  seg($('#segDir'),[['-1','Searah jarum jam'],['1','Berlawanan arah']],()=>String(sc1.dir),v=>{sc1.dir=+v;sc1.cam.clearTrail();});
+  seg($('#segTempo'),TEMPO,()=>sc1.tempo,v=>{sc1.tempo=v;renderObs();});
+  seg($('#segTenaga'),TENAGA,()=>sc1.tenaga,v=>{sc1.tenaga=v;renderObs();});
+  seg($('#segLevel'),LEVELOPT,()=>sc1.level,v=>{sc1.level=v;renderObs();});
+  $('#partChips').onclick=e=>{
+    const b=e.target.closest('.chip');if(!b)return;
+    curPart=b.dataset.p;
+    $$('#partChips .chip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    buildMoveChips();chooseMove(movesOfPart(curPart)[0]);
+  };
+  $('#moveChips').onclick=e=>{const b=e.target.closest('.chip');if(b)chooseMove(b.dataset.id);};
+  $('#btnPause').onclick=()=>{sc1.paused=!sc1.paused;syncPauseBtn();};
+  $('#scrub').addEventListener('input',e=>{sc1.paused=true;sc1.phase=(+e.target.value)/1000;syncPauseBtn();sc1.render(false);});
+  $('#trailToggle').onchange=e=>{sc1.setTrail(e.target.checked);};
+  sc1.onFrame=p=>{if(!sc1.paused)$('#scrub').value=Math.round(p*1000);};
+  $('#swatches').innerHTML=COSTUMES.map((c,i)=>'<button type="button" class="sw" data-i="'+i+'" style="background:'+c[1]+'" aria-label="Kostum '+c[0]+'" aria-pressed="false"></button>').join('');
+  $('#swatches').onclick=e=>{const b=e.target.closest('.sw');if(b)setCostume(+b.dataset.i);};
+  sc1.setTrail($('#trailToggle').checked);
+  markSeen(sc1.move);
+  syncPauseBtn();syncControls();renderObs();
+}
+
+/* ---------- TAHAP 2: tebak ---------- */
+const sc2=new Scene($('#svgTebak'),$('#svgTebakHead'));
+const quiz={i:0,n:8,score:0,streak:0,plan:[],q:null,locked:false};
+const QTYPES=['gerakKepala','gerakKepala','gerakKepala','gerak','tenaga','tenaga','level','tempo'];
+function makeQuestion(type){
+  const cfg={move:null,tempo:pick(['lambat','sedang','cepat']),tenaga:pick(['lembut','kuat','patah']),level:pick(LEVELS),dir:pick([1,-1])};
+  if(type==='gerakKepala'){cfg.move=pick(HEAD_IDS);cfg.tenaga='lembut';cfg.tempo=pick(['lambat','sedang']);}
+  else if(type==='gerak'||type==='level'){cfg.move=pick(BODY_IDS);}
+  else cfg.move=pick(ALL);
+  if(type==='tempo')cfg.tenaga='lembut';
+  if(type==='level'){cfg.tenaga='lembut';cfg.tempo='sedang';}
+  if(type==='tenaga')cfg.tempo=pick(['lambat','sedang']);
+  let text,correct,opts,explain;
+  if(type==='gerakKepala'||type==='gerak'){
+    const pool=type==='gerakKepala'?HEAD_IDS:BODY_IDS;
+    text=type==='gerakKepala'?'Gerak kepala apa yang sedang diperagakan? Ikuti titik kuning di tampak depan dan tampak samping.':'Gerak dasar apa yang sedang dilakukan avatar?';
+    correct=cfg.move;
+    opts=shuffle([cfg.move].concat(shuffle(pool.filter(x=>x!==cfg.move)).slice(0,3))).map(id=>({v:id,l:MOVES[id].name}));
+    explain=MOVES[cfg.move].name+': '+MOVES[cfg.move].desc+(MOVES[cfg.move].pakai?' '+MOVES[cfg.move].pakai:'');
+  }else{
+    const src={tenaga:TENAGA,level:LEVELOPT,tempo:TEMPO}[type];
+    text={tenaga:'Bagaimana tenaga gerakan avatar?',level:'Pada level apa avatar menari? Perhatikan tinggi tubuhnya dari lantai.',tempo:'Bagaimana tempo gerakan avatar?'}[type];
+    correct=cfg[type];opts=src.map(o=>({v:o[0],l:o[1]}));explain=TXT[type][correct];
+  }
+  return {type,cfg,text,correct,opts,explain};
+}
+function renderQ(){
+  const q=quiz.q;
+  $('#qMeta').textContent='Soal '+(quiz.i+1)+' dari '+quiz.n;
+  $('#qScore').textContent='Skor '+quiz.score;
+  $('#qStreak').textContent=quiz.streak>1?quiz.streak+' benar berturut-turut':'';
+  $('#qText').textContent=q.text;
+  $('#qOpts').innerHTML=q.opts.map(o=>'<button type="button" class="opt" data-v="'+o.v+'">'+o.l+'</button>').join('');
+  $('#qFb').hidden=true;$('#qNext').hidden=true;
+  sc2.tempo=q.cfg.tempo;sc2.tenaga=q.cfg.tenaga;sc2.level=q.cfg.level;sc2.dir=q.cfg.dir;
+  sc2.setMove(q.cfg.move);
+}
+function nextQ(){quiz.q=makeQuestion(quiz.plan[quiz.i]);quiz.locked=false;renderQ();}
+function startQuiz(){
+  quiz.i=0;quiz.score=0;quiz.streak=0;quiz.plan=shuffle(QTYPES.slice());
+  $('#quizResult').hidden=true;$('#quizBody').hidden=false;nextQ();
+}
+function finishQuiz(){
+  $('#quizBody').hidden=true;$('#quizResult').hidden=false;
+  $('#resTitle').textContent='Skor kamu '+quiz.score+' dari '+quiz.n;
+  $('#resText').textContent=quiz.score>=7?'Matamu sudah terlatih membaca gerak. Saatnya menyusun koreografi sendiri.'
+    :quiz.score>=4?'Sudah cukup baik. Buka Tahap 1, perhatikan jejak dagu di tampak depan dan samping, lalu coba lagi.'
+    :'Ini baru latihan. Buka Tahap 1, ubah tempo dan tenaga satu per satu, nyalakan jejak, lalu main lagi.';
+  if(quiz.score>best)best=quiz.score;
+  markDone('tebak');save();
+}
+function initTebak(){
+  $('#qOpts').onclick=e=>{
+    const b=e.target.closest('.opt');if(!b||quiz.locked)return;
+    quiz.locked=true;
+    const ok=b.dataset.v===quiz.q.correct;
+    if(ok){quiz.score++;quiz.streak++;}else quiz.streak=0;
+    $$('#qOpts .opt').forEach(x=>{
+      x.disabled=true;
+      if(x.dataset.v===quiz.q.correct)x.classList.add('right');
+      else if(x===b)x.classList.add('wrong');
+    });
+    $('#qScore').textContent='Skor '+quiz.score;
+    $('#qStreak').textContent=quiz.streak>1?quiz.streak+' benar berturut-turut':'';
+    const fb=$('#qFb');fb.innerHTML='<b>'+(ok?'Tepat.':'Belum tepat.')+'</b>'+quiz.q.explain;fb.hidden=false;
+    const nx=$('#qNext');nx.textContent=quiz.i+1>=quiz.n?'Lihat hasil':'Soal berikutnya';nx.hidden=false;
+  };
+  $('#qNext').onclick=()=>{quiz.i++;if(quiz.i>=quiz.n)finishQuiz();else nextQ();};
+  $('#btnRestart').onclick=startQuiz;
+  $('#quizTrail').onchange=e=>{sc2.setTrail(e.target.checked);};
+  startQuiz();
+}
+
+/* ---------- TAHAP 3: susun ---------- */
+const svgS=$('#svgSusun');
+const seqScene={
+  d:new Dancer(svgS),t:0,playing:false,cur:-1,pv:0,
+  slotPose(i,ph){
+    const s=seq[i];
+    let p=s.m?poseAtPhase(s.m,ph,st.tenaga,s.lv):applyLevel(NEUTRAL,s.lv);
+    if(s.h)p=withHead(p,headParams(s.h,ph,st.tenaga,-1));
+    return p;
+  },
+  tick(dt){
+    if(this.playing){
+      this.t+=dt;
+      const slotMs=SLOT[st.tempo],total=slotMs*8,tt=this.t%total,i=Math.floor(tt/slotMs),local=tt-i*slotMs;
+      let pose=this.slotPose(i,local/slotMs);
+      if(local<260){
+        const prev=(i===0&&this.t<total)?applyLevel(NEUTRAL,'sedang'):this.slotPose((i+7)%8,.999);
+        pose=lerpPose(prev,pose,smooth(local/260));
+      }
+      this.d.draw(pose,false);
+      if(i!==this.cur){this.cur=i;nowSlot=i;renderSlots();$('#susunTag').textContent='Hitungan '+(i+1);}
+      moveMarker(i,local/slotMs);
+    }else{
+      this.pv=(this.pv+dt/SLOT[st.tempo])%1;
+      this.d.draw(this.slotPose(pvSlot,this.pv),false);
+    }
+  }
+};
+function samplePoly(c,n){
+  const per=c.length,out=[];
+  for(let i=0;i<=n;i++){
+    const s=i/n*per,e=Math.min(per-1,Math.floor(s)),f=s-e,a=c[e],b=c[(e+1)%per];
+    out.push([a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f]);
+  }
+  return out;
+}
+const PAT={
+  lurus:{name:'Garis lurus',fn:()=>Array.from({length:9},(_,i)=>[120,22+i*15])},
+  diagonal:{name:'Diagonal',fn:()=>Array.from({length:9},(_,i)=>[32+i*22,28+i*14])},
+  zigzag:{name:'Zig-zag',fn:()=>Array.from({length:9},(_,i)=>[i%2?178:62,22+i*15])},
+  lingkaran:{name:'Lingkaran',fn:()=>Array.from({length:9},(_,i)=>{const a=(-90+i*45)*D;return [120+58*Math.cos(a),80+58*Math.sin(a)];})},
+  persegi:{name:'Persegi',fn:()=>samplePoly([[52,30],[188,30],[188,132],[52,132]],8)}
+};
+let floorPts=PAT.lurus.fn();
+function renderFloor(){
+  const P=floorPts=PAT[st.pat].fn();
+  const f=n=>n.toFixed(1);
+  let h='<rect class="fm-bg" x="4" y="4" width="232" height="148" rx="12"/>'
+    +'<text class="fm-lbl" x="120" y="167" text-anchor="middle">Penonton</text>'
+    +'<polyline class="fm-path" points="'+P.map(p=>f(p[0])+','+f(p[1])).join(' ')+'"/>'
+    +'<circle class="fm-start" cx="'+f(P[0][0])+'" cy="'+f(P[0][1])+'" r="6"/>';
+  seq.forEach((s,i)=>{
+    const p=P[i+1];
+    h+='<circle class="dot '+s.lv+(i===selSlot?' sel':'')+'" cx="'+f(p[0])+'" cy="'+f(p[1])+'" r="7"/>'
+      +'<text class="dot-t '+s.lv+'" x="'+f(p[0])+'" y="'+f(p[1]+3.2)+'">'+(i+1)+'</text>';
+  });
+  h+='<circle id="marker" class="fm-marker" cx="'+f(P[0][0])+'" cy="'+f(P[0][1])+'" r="6" style="display:none"/>';
+  $('#floorMap').innerHTML=h;
+  if(seqScene.playing)$('#marker').style.display='';
+}
+function moveMarker(i,u){
+  const m=$('#marker');if(!m)return;
+  const a=floorPts[i],b=floorPts[i+1],e=smooth(u);
+  m.style.display='';
+  setA(m,{cx:(a[0]+(b[0]-a[0])*e).toFixed(1),cy:(a[1]+(b[1]-a[1])*e).toFixed(1)});
+}
+function renderSlots(){
+  $('#slots').innerHTML=seq.map((s,i)=>{
+    const nm=s.m?MOVES[s.m].short:'Jeda';
+    const hn=s.h?MOVES[s.h].short:'';
+    return '<button type="button" class="slot'+(s.m||s.h?' filled':'')+(i===selSlot?' sel':'')+(i===nowSlot?' now':'')+'" data-i="'+i+'" aria-label="Hitungan '+(i+1)+': '+nm+', level '+LBL.level[s.lv].toLowerCase()+(hn?', kepala '+hn:'')+'" aria-pressed="'+(i===selSlot)+'">'
+      +'<span class="n">'+(i+1)+'</span><span>'+nm+'</span><span class="lvtag lv-'+s.lv+'">'+LBL.level[s.lv]+'</span><span class="hd">'+(hn?'Kepala: '+hn:'')+'</span></button>';
+  }).join('');
+}
+function setPreviewTag(){if(!seqScene.playing)$('#susunTag').textContent='Pratinjau hitungan '+(pvSlot+1);}
+function renderPalette(){
+  const cur=seq[selSlot];
+  $('#slotLabel').textContent='Gerak badan untuk hitungan '+(selSlot+1);
+  $('#palette').innerHTML=BODY_IDS.map(id=>'<button type="button" class="chip" data-id="'+id+'" aria-pressed="'+(cur.m===id)+'">'+MOVES[id].short+'</button>').join('')
+    +'<button type="button" class="chip" data-id="" aria-pressed="'+(cur.m===null)+'">Jeda</button>';
+  $('#headLabel').textContent='Gerak kepala untuk hitungan '+(selSlot+1)+' (opsional)';
+  $('#paletteHead').innerHTML=HEAD_IDS.map(id=>'<button type="button" class="chip" data-id="'+id+'" aria-pressed="'+(cur.h===id)+'">'+MOVES[id].short+'</button>').join('')
+    +'<button type="button" class="chip" data-id="" aria-pressed="'+(cur.h===null)+'">Tanpa gerak kepala</button>';
+  seg($('#segSlotLevel'),LEVELOPT,()=>seq[selSlot].lv,v=>{seq[selSlot].lv=v;pvSlot=selSlot;renderSlots();renderFloor();renderChallenges();save();});
+  setPreviewTag();
+}
+function selectSlot(i){selSlot=Math.max(0,Math.min(7,i));pvSlot=selSlot;seqScene.pv=0;renderSlots();renderPalette();renderFloor();}
+function challengeList(){
+  const filled=seq.filter(s=>s.m);
+  const uniq=new Set(filled.map(s=>s.m)).size;
+  const lv=new Set(filled.map(s=>s.lv)).size;
+  const heads=seq.filter(s=>s.h).length;
+  let run=false;
+  for(let i=2;i<8;i++){if(seq[i].m&&seq[i].m===seq[i-1].m&&seq[i].m===seq[i-2].m)run=true;}
+  return [
+    ['Isi sedikitnya 6 hitungan dengan gerak badan',filled.length>=6],
+    ['Pakai minimal 4 gerak badan yang berbeda',uniq>=4],
+    ['Gunakan ketiga level: rendah, sedang, tinggi',lv===3],
+    ['Tambahkan gerak kepala pada minimal 2 hitungan',heads>=2],
+    ['Sisipkan satu jeda agar koreografi punya napas',filled.length>=4&&filled.length<8],
+    ['Hindari gerak badan yang sama tiga kali berturut-turut',filled.length>=3&&!run]
+  ];
+}
+function renderChallenges(){
+  const c=challengeList(),done=c.every(x=>x[1]);
+  $('#challenges').innerHTML=c.map(x=>'<li class="'+(x[1]?'ok':'')+'"><span class="mk">'+(x[1]?'\u2713':'')+'</span><span>'+x[0]+'</span></li>').join('');
+  $('#chalMsg').textContent=done?'Koreografimu lengkap. Putar sekali lagi, lalu lanjut ke proyek stop motion.':'';
+  if(done)markDone('susun');
+}
+function refreshAll(){renderSlots();renderPalette();renderFloor();renderChallenges();save();}
+function randomize(){
+  const mv=shuffle(BODY_IDS.slice()),lv=shuffle(LEVELS.slice()),hd=shuffle(HEAD_IDS.slice());
+  for(let i=0;i<8;i++)seq[i]={m:mv[i%mv.length],lv:lv[i%3],h:null};
+  seq[1+Math.floor(Math.random()*6)].m=null;
+  shuffle(seq);
+  const idx=shuffle([0,1,2,3,4,5,6,7]).slice(0,4);
+  idx.forEach((k,n)=>{seq[k].h=hd[n];});
+  refreshAll();
+}
+function initSusun(){
+  $('#slots').onclick=e=>{const b=e.target.closest('.slot');if(b)selectSlot(+b.dataset.i);};
+  $('#btnPrevSlot').onclick=()=>selectSlot(selSlot-1);
+  $('#btnNextSlot').onclick=()=>selectSlot(selSlot+1);
+  $('#palette').onclick=e=>{
+    const b=e.target.closest('.chip');if(!b)return;
+    seq[selSlot].m=b.dataset.id||null;seqScene.pv=0;pvSlot=selSlot;refreshAll();
+  };
+  $('#paletteHead').onclick=e=>{
+    const b=e.target.closest('.chip');if(!b)return;
+    seq[selSlot].h=b.dataset.id||null;seqScene.pv=0;pvSlot=selSlot;refreshAll();
+  };
+  seg($('#segSeqTempo'),TEMPO,()=>st.tempo,v=>{st.tempo=v;save();});
+  seg($('#segSeqTenaga'),TENAGA,()=>st.tenaga,v=>{st.tenaga=v;save();});
+  $('#patChips').innerHTML=Object.keys(PAT).map(k=>'<button type="button" class="chip" data-k="'+k+'" aria-pressed="'+(st.pat===k)+'">'+PAT[k].name+'</button>').join('');
+  $('#patChips').onclick=e=>{
+    const b=e.target.closest('.chip');if(!b)return;
+    st.pat=b.dataset.k;
+    $$('#patChips .chip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    renderFloor();save();
+  };
+  $('#btnPlay').onclick=()=>{
+    seqScene.playing=!seqScene.playing;seqScene.t=0;seqScene.cur=-1;
+    $('#btnPlay').textContent=seqScene.playing?'Berhenti':'Putar koreografi';
+    if(!seqScene.playing){nowSlot=-1;renderSlots();renderFloor();setPreviewTag();}
+  };
+  $('#btnRandom').onclick=randomize;
+  $('#btnClear').onclick=()=>{for(let i=0;i<8;i++)seq[i]={m:null,lv:'sedang',h:null};selSlot=0;pvSlot=0;refreshAll();};
+  renderSlots();renderPalette();renderFloor();renderChallenges();
+}
+
+/* ---------- TAHAP 4: cipta ---------- */
+const frames=[];
+const sm={playing:false,idx:0,acc:0,fps:6};
+const RUB=[
+  ['Variasi gerak dan elemen','Memakai beragam gerak dasar, termasuk gerak kepala, serta mengolah ruang, waktu, dan tenaga.'],
+  ['Kreativitas','Rangkaian gerak terasa unik dan bukan sekadar meniru.'],
+  ['Pola lantai dan level','Perpindahan tempat serta tinggi rendah tubuh direncanakan dengan jelas.'],
+  ['Kualitas stop motion','Kamera stabil, cahaya konsisten, jumlah foto cukup, dan gerak terbaca.'],
+  ['Kerja sama dan presentasi','Peran dibagi rata dan karya dijelaskan dengan percaya diri.']
+];
+function buildSB(){
+  $('#sbList').innerHTML=story.map((v,i)=>'<label class="sb-row"><span class="sb-n">'+(i+1)+'</span><input type="text" maxlength="120" data-i="'+i+'" placeholder="Pose pada hitungan '+(i+1)+'" aria-label="Pose pada hitungan '+(i+1)+'"></label>').join('');
+  $$('#sbList input').forEach(inp=>{inp.value=story[+inp.dataset.i];});
+}
+function buildRub(){
+  $('#rubric').innerHTML=RUB.map((r,i)=>'<fieldset class="rub"><legend>'+r[0]+'</legend><p class="d">'+r[1]+'</p><div class="pills">'
+    +[1,2,3,4].map(v=>'<label class="pill"><input type="radio" name="r'+i+'" value="'+v+'"'+(rub[i]===v?' checked':'')+'><span>'+v+'</span></label>').join('')+'</div></fieldset>').join('');
+  renderRubTotal();
+}
+function renderRubTotal(){
+  const n=rub.filter(Boolean).length,sum=rub.reduce((a,b)=>a+b,0);
+  $('#rubTotal').textContent=n<RUB.length?'Isi semua kriteria untuk melihat nilai ('+n+' dari '+RUB.length+' terisi).':'Skor '+sum+' dari '+(RUB.length*4)+', nilai '+Math.round(sum/(RUB.length*4)*100)+'.';
+}
+function fileToFrame(file){
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onerror=()=>reject(new Error('baca'));
+    r.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('gambar'));
+      img.onload=()=>{
+        const max=640,s=Math.min(1,max/Math.max(img.width,img.height));
+        const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*s));c.height=Math.max(1,Math.round(img.height*s));
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        const src=c.toDataURL('image/jpeg',.82),out=new Image();
+        out.onload=()=>resolve({src:src,img:out,w:c.width,h:c.height});
+        out.onerror=()=>reject(new Error('gambar'));
+        out.src=src;
+      };
+      img.src=r.result;
+    };
+    r.readAsDataURL(file);
+  });
+}
+async function addFiles(list){
+  const room=60-frames.length;
+  const files=Array.from(list).filter(f=>f.type&&f.type.indexOf('image/')===0).slice(0,Math.max(0,room));
+  let failed=0;
+  for(const f of files){try{frames.push(await fileToFrame(f));}catch(e){failed++;}}
+  if(sm.idx>=frames.length)sm.idx=Math.max(0,frames.length-1);
+  renderFrames();
+  if(failed)$('#smInfo').textContent+=' '+failed+' foto gagal dibaca. Coba pilih ulang fotonya.';
+  if(room<=0)$('#smInfo').textContent+=' Batas 60 foto sudah tercapai.';
+}
+function drawSM(){
+  const c=$('#smCanvas').getContext('2d');
+  c.fillStyle='#161437';c.fillRect(0,0,640,480);
+  const f=frames[sm.idx];if(!f)return;
+  const s=Math.min(640/f.w,480/f.h),w=f.w*s,h=f.h*s;
+  c.drawImage(f.img,(640-w)/2,(480-h)/2,w,h);
+}
+function renderFrames(){
+  $('#strip').innerHTML=frames.map((f,i)=>'<div class="thumb'+(i===sm.idx?' cur':'')+'" data-i="'+i+'"><img src="'+f.src+'" alt="Foto '+(i+1)+'" tabindex="0"><span class="no">'+(i+1)+'</span><div class="tb"><button type="button" data-a="l" aria-label="Geser foto '+(i+1)+' ke kiri">\u2039</button><button type="button" data-a="r" aria-label="Geser foto '+(i+1)+' ke kanan">\u203A</button><button type="button" data-a="d" aria-label="Hapus foto '+(i+1)+'">\u2715</button></div></div>').join('');
+  $('#smEmpty').hidden=frames.length>0;
+  const n=frames.length;
+  $('#smInfo').textContent=n?n+' foto, sekitar '+(n/sm.fps).toFixed(1)+' detik pada kecepatan ini. Minimal 24 foto untuk tugas akhir.':'Belum ada foto.';
+  if(n>=8)markDone('cipta');
+  drawSM();
+}
+function smTick(dt){
+  if(!sm.playing||frames.length<2)return;
+  sm.acc+=dt;const step=1000/sm.fps;let ch=false;
+  while(sm.acc>=step){sm.acc-=step;sm.idx=(sm.idx+1)%frames.length;ch=true;}
+  if(ch){drawSM();$$('#strip .thumb').forEach((t,i)=>t.classList.toggle('cur',i===sm.idx));}
+}
+function initCipta(){
+  buildSB();buildRub();
+  $('#sbList').addEventListener('input',e=>{const i=e.target.dataset.i;if(i===undefined)return;story[+i]=e.target.value;save();});
+  $('#btnFromSeq').onclick=()=>{
+    seq.forEach((s,i)=>{story[i]=(s.m?MOVES[s.m].name:'Jeda')+', level '+LBL.level[s.lv].toLowerCase()+(s.h?', kepala: '+MOVES[s.h].name:'');});
+    buildSB();save();
+  };
+  $('#fileCam').onchange=e=>{addFiles(e.target.files);e.target.value='';};
+  $('#fileGallery').onchange=e=>{addFiles(e.target.files);e.target.value='';};
+  $('#fpsRange').oninput=e=>{sm.fps=+e.target.value;$('#fpsVal').textContent=sm.fps+' foto/detik';renderFrames();};
+  $('#btnSmPlay').onclick=()=>{
+    if(frames.length<2){$('#smInfo').textContent='Tambahkan minimal 2 foto untuk memutar animasi.';return;}
+    sm.playing=!sm.playing;sm.acc=0;$('#btnSmPlay').textContent=sm.playing?'Jeda':'Putar';
+  };
+  $('#btnClearFrames').onclick=()=>{frames.length=0;sm.idx=0;sm.playing=false;$('#btnSmPlay').textContent='Putar';renderFrames();};
+  $('#strip').addEventListener('click',e=>{
+    const t=e.target.closest('.thumb');if(!t)return;
+    const i=+t.dataset.i,b=e.target.closest('button');
+    if(b){
+      const a=b.dataset.a;
+      if(a==='d'){frames.splice(i,1);if(sm.idx>=frames.length)sm.idx=Math.max(0,frames.length-1);}
+      else if(a==='l'&&i>0){[frames[i-1],frames[i]]=[frames[i],frames[i-1]];sm.idx=i-1;}
+      else if(a==='r'&&i<frames.length-1){[frames[i+1],frames[i]]=[frames[i],frames[i+1]];sm.idx=i+1;}
+    }else{sm.idx=i;sm.playing=false;$('#btnSmPlay').textContent='Putar';}
+    renderFrames();
+  });
+  $('#strip').addEventListener('keydown',e=>{
+    if((e.key==='Enter'||e.key===' ')&&e.target.tagName==='IMG'){e.preventDefault();e.target.click();}
+  });
+  $('#rubric').addEventListener('change',e=>{
+    if(e.target.type!=='radio')return;
+    rub[+e.target.name.slice(1)]=+e.target.value;renderRubTotal();save();
+  });
+  renderFrames();
+}
+
+/* ---------- navigasi tab & loop ---------- */
+let active='amati',last=performance.now();
+const TICKS={
+  amati:dt=>sc1.tick(dt),
+  tebak:dt=>sc2.tick(dt),
+  susun:dt=>seqScene.tick(dt),
+  cipta:dt=>smTick(dt)
+};
+const PHASE={amati:1,tebak:1,susun:2,cipta:3};
+function showTab(id,scroll){
+  active=id;last=performance.now();
+  $$('.tab').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.tab===id)));
+  ['amati','tebak','susun','cipta'].forEach(k=>{$('#p-'+k).hidden=(k!==id);});
+  [1,2,3].forEach(n=>$('#ph'+n).classList.toggle('on',PHASE[id]===n));
+  if(id!=='susun'&&seqScene.playing){$('#btnPlay').click();}
+  if(scroll){const y=$('#panels').getBoundingClientRect().top+window.scrollY-$('#nav').offsetHeight-8;window.scrollTo({top:Math.max(0,y),behavior:'smooth'});}
+}
+$('.tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(b)showTab(b.dataset.tab,false);});
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)showTab(g.dataset.go,true);});
+function loop(now){
+  const dt=Math.min(64,now-last);last=now;
+  const f=TICKS[active];if(f)f(dt);
+  requestAnimationFrame(loop);
+}
+
+/* ---------- mulai ---------- */
+load();
+initAmati();initTebak();initSusun();initCipta();
+setCostume(costume);
+renderTabs();
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
